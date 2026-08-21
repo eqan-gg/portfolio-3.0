@@ -1,6 +1,6 @@
 # Eqan Hanif - Personal Portfolio
 
-A modern, high-performance personal portfolio website built to showcase my projects, frontend skills, and security research findings. Designed with a focus on seamless user experience, smooth interactions, and a premium dark-themed aesthetic.
+A modern, high-performance personal portfolio website built to showcase my projects, MERN stack skills, and security research findings. Designed with a focus on seamless user experience, smooth interactions, and a premium dark-themed aesthetic.
 
 ## 🚀 Features
 

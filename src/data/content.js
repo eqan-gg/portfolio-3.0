@@ -3,7 +3,7 @@ import profileImg from '../assets/profile.jpeg';
 export const content = {
   hero: {
     name: 'Eqan Hanif',
-    title: 'Frontend Developer & Security Researcher',
+    title: 'MERN Stack Developer & Security Researcher',
     tagline: 'I build pixel-perfect web experiences and break things responsibly.',
     img: profileImg,
   },
@@ -25,12 +25,12 @@ export const content = {
 
   about: {
     paragraphs: [
-      `I'm a passionate Frontend Developer and BSCS student who specializes in building exceptional websites, applications, and everything in between. My focus is on creating accessible, user-centric interfaces that blend performance with aesthetics.`,
-      `I love the problem-solving aspect of development and the immediate visual feedback of frontend work. Turning complex designs into functional, beautiful code is what drives me. On the security side, I actively hunt for vulnerabilities through responsible disclosure programs — with acknowledgments from organizations like Qodo, Tigris Data, Skipr, and Novu.`,
+      `I'm a passionate MERN Stack Developer and BSCS student who specializes in building exceptional websites, applications, and everything in between. My focus is on creating accessible, user-centric interfaces that blend performance with aesthetics.`,
+      `I love the problem-solving aspect of development and the immediate visual feedback of MERN stack work. Turning complex designs into functional, beautiful code is what drives me. On the security side, I actively hunt for vulnerabilities through responsible disclosure programs — with acknowledgments from organizations like Qodo, Tigris Data, Skipr, and Novu.`,
       `I'm looking for opportunities to work with a collaborative team on ambitious projects where I can continue to learn and grow as a developer.`,
     ],
     highlightedTerms: [
-      { text: 'Frontend Developer', url: null },
+      { text: 'MERN Stack Developer', url: null },
       { text: 'accessible', url: null },
       { text: 'Qodo', url: 'https://www.qodo.ai/' },
       { text: 'Tigris Data', url: 'https://www.tigrisdata.com/' },

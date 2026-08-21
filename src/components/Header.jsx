@@ -55,7 +55,7 @@ const Header = () => {
   }, []);
 
   const typingTexts = [
-    'Frontend Developer',
+    'MERN Stack Developer',
     'Security Researcher',
     'UI/UX Enthusiast',
     'Bug Hunter',
