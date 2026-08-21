@@ -1,0 +1,6 @@
+- 🔐 **HackerOne:** [eqan-ggg](https://hackerone.com/eqan-ggg?type=user)
+- ⭐ **Skipr Security Hall of Fame:** [Eqan Chauhan](https://www.skipr.co/resources/responsible-disclosure)
+- 🛡️ **Novu Security Advisory:** [GHSA-rwfx-fwc7-rg4j](https://github.com/novuhq/novu/security/advisories/GHSA-rwfx-fwc7-rg4j)
+  - Weak Password Policy on Dashboard
+  - Severity: Moderate
+  - Credit: Reporter

@@ -1,0 +1,38 @@
+1) Pinnacle Design Agency (Clone of https://www.pinnacledesignagency.com/ ) :
+Link : https://pinnacle-agency-clone.vercel.app/
+github : https://github.com/eqan-gg/pinnacle-agency-clone
+Technology : React 19 + Vite
+Tailwind CSS (base only — styling comes from original CSS)
+AOS, React Slick, SweetAlert2
+Bootstrap 4 grid (via CDN)
+Font Awesome 5 (via CDN)
+
+
+2) University Project For Ecommerce Website selling different types of burqas:
+Link :https://sitr-abayas.vercel.app/
+github :https://github.com/eqan-gg/sitr-abayas-IFS
+Tech: TypeScript
+Tailwind CSS
+JavaScript
+Whatsapp Button integrated on all pages u order can also be given thru whatsapp chatting.
+
+
+3) University Project Student LMS System 
+Link :https://student-portal-2-tau.vercel.app/auth
+https://github.com/eqan-gg/student-portal-2
+Technology : Vite
+TypeScript
+React
+shadcn-ui
+Tailwind CSS
+Supabase for authentication and db : student enrolled,attendance marking,course selection, one more feature u add by yourself.
+
+4) University Project for course named Technoprenuership A student mock interview setup eleven labs api integrated asking questions to the participient the goal is to set students unexprieced for the job market boosting their confidence etc etc
+Link :https://mockmate-eta.vercel.app/
+github : https://github.com/eqan-gg/mockmate
+Technology : Vite
+TypeScript
+React
+shadcn-ui
+Tailwind CSS
+Eleven Labs API 

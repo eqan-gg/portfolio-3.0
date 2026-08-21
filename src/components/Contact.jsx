@@ -1,202 +1,267 @@
+import { useEffect, useRef, useState } from 'react';
 import { content } from '../data/content';
-import { FiMail, FiGithub, FiLinkedin, FiSend } from 'react-icons/fi';
-import { useState } from 'react';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const Contact = () => {
-
+  const sectionRef = useRef(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const elements = sectionRef.current?.querySelectorAll('.reveal');
+    elements?.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
     try {
       setLoading(true);
-      const response = await fetch(
-        "https://portfolio-server-vev8.onrender.com/api/contact",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email, message }),
-        }
-      );
+      const response = await fetch(content.contact.apiEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
 
       if (response.ok) {
-        setName("");
-        setEmail("");
-        setMessage("");
-        toast.success("Message sent successfully ✅");
-        setLoading(false);
+        setName('');
+        setEmail('');
+        setMessage('');
+        toast.success('Message sent successfully ✅');
       } else {
-        toast.error("Failed to send message ❌");
-        setLoading(false);
+        toast.error('Failed to send message ❌');
       }
     } catch (error) {
-      toast.error("Server error. Try again later ❌");
+      toast.error('Server error. Try again later ❌');
       console.error(error);
+    } finally {
       setLoading(false);
     }
   };
 
-
   return (
-    <section id="contact" className="section">
-      <div className="container contact-container">
-        <h2 className="section-title">Get In Touch</h2>
-        <p className="contact-intro animate-fade-in">
-          I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
-        </p>
+    <section id="contact" ref={sectionRef} className="contact-section" aria-label="Contact">
+      <div className="section-heading reveal">
+        <h2 className="section-label-mobile font-mono accent-text">Contact</h2>
+      </div>
 
-        <div className="contact-grid">
-          <div className="contact-info animate-slide-up">
-            <div className="info-item">
-              <h3>Email</h3>
-              <a href={`mailto:${content.contact.email}`} className="icon-link">
-                <FiMail /> {content.contact.email}
-              </a>
-            </div>
-            <div className="social-links">
-              <a href={content.contact.github} target="_blank" rel="noopener noreferrer" className="icon-link social">
-                <FiGithub /> GitHub
-              </a>
-              <a href={content.contact.linkedin} target="_blank" rel="noopener noreferrer" className="icon-link social">
-                <FiLinkedin /> LinkedIn
-              </a>
-            </div>
+      <div className="contact-body reveal">
+        <h3 className="contact-heading">{content.contact.heading}</h3>
+        <p className="contact-description">{content.contact.description}</p>
+      </div>
+
+      <form className="contact-form reveal reveal-delay-1" onSubmit={handleSubmit}>
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="contact-name">Name</label>
+            <input
+              type="text"
+              id="contact-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              required
+            />
           </div>
-
-          <form className="contact-form animate-slide-up delay-1" onSubmit={handleSubmit} action="/contact" method="post">
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} id="name" placeholder="FullName" required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} id="email" placeholder="Email" required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="message">Message</label>
-              <textarea value={message} onChange={(e) => setMessage(e.target.value)} id="message" rows="5" placeholder="Your message here..." required></textarea>
-            </div>
-            <button type="submit" disabled={loading} className="btn submit-btn">
-              Send Message <FiSend style={{ marginLeft: '0.5rem' }} />
-            </button>
-          </form>
+          <div className="form-group">
+            <label htmlFor="contact-email">Email</label>
+            <input
+              type="email"
+              id="contact-email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
         </div>
+        <div className="form-group">
+          <label htmlFor="contact-message">Message</label>
+          <textarea
+            id="contact-message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="What would you like to say?"
+            rows="5"
+            required
+          />
+        </div>
+        <button type="submit" disabled={loading} className="submit-btn">
+          {loading ? 'Sending...' : 'Send Message'}
+          {!loading && (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" style={{ marginLeft: '0.5rem' }}>
+              <path d="M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z" />
+            </svg>
+          )}
+        </button>
+      </form>
+
+      <div className="contact-alt reveal reveal-delay-2">
+        <p>
+          Or reach me directly at{' '}
+          <a href={`mailto:${content.contact.email}`} className="text-link">
+            {content.contact.email}
+          </a>
+        </p>
       </div>
 
       <style>{`
-        .contact-container {
-          max-width: 800px;
-          text-align: center;
+        .contact-section {
+          margin-bottom: 6rem;
+          scroll-margin-top: 6rem;
         }
 
-        .contact-intro {
-          color: var(--text-secondary);
-          margin-bottom: 3rem;
-          max-width: 600px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .contact-grid {
-          display: grid;
-          grid-template-columns: 1fr 1.5fr;
-          gap: 3rem;
-          text-align: left;
-        }
-
-        .contact-info {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-
-        .info-item h3 {
-          font-size: 0.9rem;
-          color: var(--text-secondary);
-          margin-bottom: 0.5rem;
+        .section-label-mobile {
+          font-size: 0.85rem;
+          font-weight: 600;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
-          letter-spacing: 1px;
+          display: none;
         }
 
-        .icon-link {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          font-size: 1.1rem;
-          color: var(--text-primary);
+        .contact-heading {
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: var(--text-bright);
+          margin-bottom: 0.75rem;
         }
 
-        .icon-link:hover {
-          color: var(--accent);
+        .contact-description {
+          font-size: 0.95rem;
+          color: var(--text-secondary);
+          line-height: 1.7;
+          max-width: 500px;
+          margin-bottom: 2rem;
         }
 
-        .social-links {
-          display: flex;
-          flex-direction: column;
+        /* ── Form ── */
+        .contact-form {
+          background: rgba(17, 34, 64, 0.5);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+          transition: border-color var(--transition);
+        }
+
+        .contact-form:focus-within {
+          border-color: rgba(100, 255, 218, 0.2);
+        }
+
+        .form-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
           gap: 1rem;
         }
 
-        .contact-form {
-          background: var(--bg-card);
-          padding: 2rem;
-          border-radius: 12px;
-          border: 1px solid var(--border);
-        }
-
         .form-group {
-          margin-bottom: 1.5rem;
+          margin-bottom: 1.25rem;
         }
 
         .form-group label {
           display: block;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.4rem;
+          font-size: 0.8rem;
+          font-weight: 500;
           color: var(--text-secondary);
-          font-size: 0.9rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
         }
 
         .form-group input,
         .form-group textarea {
           width: 100%;
-          padding: 0.8rem;
-          background: var(--bg-primary);
+          padding: 0.75rem 1rem;
+          background: rgba(10, 25, 47, 0.8);
           border: 1px solid var(--border);
           border-radius: 6px;
           color: var(--text-primary);
-          font-family: inherit;
+          font-family: var(--font-body);
+          font-size: 0.9rem;
+          transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+          outline: none;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
-          outline: none;
           border-color: var(--accent);
+          box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+          color: rgba(136, 146, 176, 0.5);
+        }
+
+        .form-group textarea {
+          resize: vertical;
+          min-height: 100px;
         }
 
         .submit-btn {
-          width: 100%;
-          display: flex;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
+          padding: 0.8rem 2rem;
+          background: transparent;
+          border: 1px solid var(--accent);
+          border-radius: 6px;
+          color: var(--accent);
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+          transition: all var(--transition);
         }
 
-        @media (max-width: 768px) {
-          .contact-grid {
-            grid-template-columns: 1fr;
-            gap: 2rem;
+        .submit-btn:hover:not(:disabled) {
+          background: var(--accent-dim);
+          box-shadow: 0 0 20px rgba(100, 255, 218, 0.15);
+        }
+
+        .submit-btn:disabled {
+          opacity: 0.6;
+        }
+
+        .contact-alt {
+          font-size: 0.88rem;
+          color: var(--text-secondary);
+        }
+
+        @media (max-width: 1024px) {
+          .contact-section {
+            scroll-margin-top: 4rem;
+            padding-top: 4rem;
           }
-          
-          .social-links {
-             flex-direction: row;
-             gap: 1.5rem;
+
+          .section-label-mobile {
+            display: block;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 1.25rem 1.5rem;
+            margin: 0 -1.5rem 2rem;
+            font-size: 0.8rem;
+          }
+
+          .form-row {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
