@@ -106,6 +106,7 @@ function App() {
           .col-left {
             position: relative;
             width: 100%;
+            height: auto;
             max-height: none;
             padding-right: 0;
           }

@@ -264,6 +264,16 @@ const Contact = () => {
             grid-template-columns: 1fr;
           }
         }
+
+        @media (max-width: 480px) {
+          .contact-form {
+            padding: 1.25rem;
+          }
+          
+          .contact-heading {
+            font-size: 1.5rem;
+          }
+        }
       `}</style>
     </section>
   );

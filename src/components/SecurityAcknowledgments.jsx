@@ -297,6 +297,30 @@ const SecurityAcknowledgments = () => {
             font-size: 0.8rem;
           }
         }
+
+        @media (max-width: 480px) {
+          .security-card {
+            padding: 1rem;
+          }
+
+          .security-card-inner {
+            gap: 1rem;
+          }
+
+          .security-icon-wrap {
+            width: 36px;
+            height: 36px;
+            font-size: 1rem;
+          }
+
+          .security-org {
+            font-size: 0.95rem;
+          }
+
+          .security-desc {
+            font-size: 0.85rem;
+          }
+        }
       `}</style>
     </section>
   );

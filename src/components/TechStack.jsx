@@ -222,6 +222,21 @@ const TechStack = () => {
             font-size: 0.8rem;
           }
         }
+
+        @media (max-width: 480px) {
+          .tech-card {
+            padding: 0.75rem 1.25rem;
+            gap: 0.6rem;
+          }
+
+          .tech-icon {
+            font-size: 1.15rem;
+          }
+
+          .tech-name {
+            font-size: 0.75rem;
+          }
+        }
       `}</style>
     </section>
   );

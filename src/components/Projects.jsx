@@ -391,6 +391,20 @@ const Projects = () => {
             align-items: flex-start;
           }
         }
+
+        @media (max-width: 480px) {
+          .project-card {
+            padding: 1rem;
+          }
+
+          .project-title {
+            font-size: 0.95rem;
+          }
+
+          .project-description {
+            font-size: 0.85rem;
+          }
+        }
       `}</style>
     </section>
   );

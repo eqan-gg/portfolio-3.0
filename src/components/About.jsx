@@ -114,6 +114,12 @@ const About = () => {
             font-size: 0.8rem;
           }
         }
+
+        @media (max-width: 480px) {
+          .about-paragraph {
+            font-size: 0.95rem;
+          }
+        }
       `}</style>
     </section>
   );

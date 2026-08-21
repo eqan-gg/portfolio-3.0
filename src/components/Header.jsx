@@ -326,6 +326,24 @@ const Header = () => {
             margin-top: 2rem;
           }
         }
+
+        @media (max-width: 480px) {
+          .name-gradient {
+            font-size: 2rem;
+          }
+          
+          .header-title {
+            font-size: 1rem;
+          }
+
+          .typing-text {
+            font-size: 0.9rem;
+          }
+
+          .header-tagline {
+            font-size: 0.85rem;
+          }
+        }
       `}</style>
     </header>
   );
