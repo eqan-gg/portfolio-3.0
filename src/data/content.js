@@ -67,13 +67,13 @@ export const content = {
   projects: {
     react: [
       {
-        id: 'pinnacle',
-        title: 'Pinnacle Design Agency Clone',
+        id: 'qorbittech',
+        title: 'QorbitTech Agency',
         description:
-          'A pixel-perfect clone of Pinnacle Design Agency\'s website, rebuilt from scratch with React 19 and modern tooling including AOS animations and React Slick carousels.',
-        techStack: ['React 19', 'Vite', 'AOS', 'React Slick', 'Bootstrap 4', 'Font Awesome'],
-        demoLink: 'https://pinnacle-agency-clone.vercel.app/',
-        githubLink: 'https://github.com/eqan-gg/pinnacle-agency-clone',
+          'A Digital Design & Development Agency website.',
+        techStack: ['React', 'TypeScript', 'MongoDB', 'Vite', 'AOS', 'React Slick', 'Bootstrap 4', 'Font Awesome'],
+        demoLink: 'https://www.qorbittech.com/',
+        githubLink: null,
         featured: false,
       },
       {
