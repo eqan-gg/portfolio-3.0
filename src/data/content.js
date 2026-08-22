@@ -75,6 +75,7 @@ export const content = {
         demoLink: 'https://www.qorbittech.com/',
         githubLink: null,
         featured: false,
+        type: 'Client Project',
       },
       {
         id: 'sitr-abayas',
