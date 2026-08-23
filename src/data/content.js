@@ -240,7 +240,7 @@ export const content = {
     description:
       "I'm currently looking for new opportunities. Whether you have a question, a project idea, or just want to say hi — I'll try my best to get back to you!",
     email: 'eqanchauhaan@gmail.com',
-    apiEndpoint: 'https://portfolio-server-vev8.onrender.com/api/contact',
+    apiEndpoint: 'https://portfolio-backend-82ei.onrender.com/api/contact',
   },
 
   footer: {

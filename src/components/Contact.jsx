@@ -41,12 +41,12 @@ const Contact = () => {
         setName('');
         setEmail('');
         setMessage('');
-        toast.success('Message sent successfully ✅');
+        toast.success('> Message sent successfully_');
       } else {
-        toast.error('Failed to send message ❌');
+        toast.error('> Failed to send message_');
       }
     } catch (error) {
-      toast.error('Server error. Try again later ❌');
+      toast.error('> System error. Try again later_');
       console.error(error);
     } finally {
       setLoading(false);
