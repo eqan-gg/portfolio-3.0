@@ -26,7 +26,7 @@ export const content = {
   about: {
     paragraphs: [
       `I'm a passionate MERN Stack Developer and BSCS student who specializes in building exceptional websites, applications, and everything in between. My focus is on creating accessible, user-centric interfaces that blend performance with aesthetics.`,
-      `I love the problem-solving aspect of development and the immediate visual feedback of MERN stack work. Turning complex designs into functional, beautiful code is what drives me. On the security side, I actively hunt for vulnerabilities through responsible disclosure programs — with acknowledgments from organizations like Qodo, Tigris Data, Skipr, and Novu.`,
+      `I love the problem-solving aspect of development and the immediate visual feedback of MERN stack work. Turning complex designs into functional, beautiful code is what drives me. On the security side, I actively hunt for vulnerabilities through responsible disclosure programs — with acknowledgments from organizations like Qodo, Tigris Data, Skipr, Novu, and Hook0.`,
       `I'm looking for opportunities to work with a collaborative team on ambitious projects where I can continue to learn and grow as a developer.`,
     ],
     highlightedTerms: [
@@ -36,6 +36,7 @@ export const content = {
       { text: 'Tigris Data', url: 'https://www.tigrisdata.com/' },
       { text: 'Skipr', url: 'https://www.skipr.co/resources/responsible-disclosure' },
       { text: 'Novu', url: 'https://github.com/novuhq/novu/security/advisories/GHSA-rwfx-fwc7-rg4j' },
+      { text: 'Hook0', url: 'https://documentation.hook0.com/resources/security-acknowledgments' },
     ],
   },
 
@@ -62,10 +63,23 @@ export const content = {
     { name: 'Burp Suite', icon: 'ri-shield-keyhole-fill', color: '#FF6633' },
     { name: 'Nodemon', icon: 'ri-refresh-fill', color: '#76D04B' },
     { name: 'Git', icon: 'ri-git-branch-fill', color: '#F05032' },
+    { name: 'Resend', icon: 'ri-mail-send-fill', color: '#FFFFFF' },
+    { name: 'Render', icon: 'ri-server-line', color: '#46E3B7' },
   ],
 
   projects: {
     react: [
+      {
+        id: 'usapatches',
+        title: 'Get USA Patches',
+        description:
+          'A professional client project providing custom patch services, featuring complete order workflows, email notifications via Resend, and backend infrastructure on Render.',
+        techStack: ['React', 'Tailwind CSS', 'Vercel', 'Hostinger', 'Resend', 'Render', 'Canva', 'Figma'],
+        demoLink: 'https://getusapatches.com/',
+        githubLink: null,
+        featured: true,
+        type: 'Client Project',
+      },
       {
         id: 'qorbittech',
         title: 'QorbitTech Agency',
