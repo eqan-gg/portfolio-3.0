@@ -1,141 +1,126 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 
 const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
-  const [smoothPosition, setSmoothPosition] = useState({ x: -100, y: -100 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const mainRef = useRef(null);
+  const ringRef = useRef(null);
 
   useEffect(() => {
-    // Detect mobile/touch devices
-    const checkMobile = () => {
-      setIsMobile(window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    const pointerQuery = window.matchMedia('(pointer: fine) and (min-width: 768px)');
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!pointerQuery.matches || motionQuery.matches) return undefined;
 
-    if (isMobile) return;
+    const main = mainRef.current;
+    const ring = ringRef.current;
+    const cursor = { x: -100, y: -100, targetX: -100, targetY: -100 };
+    let frame = 0;
+    let visible = false;
 
     document.body.classList.add('custom-cursor-active');
-    return () => {
-      document.body.classList.remove('custom-cursor-active');
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, [isMobile]);
-
-  const handleMouseMove = useCallback((e) => {
-    setPosition({ x: e.clientX, y: e.clientY });
-    setIsVisible(true);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setIsVisible(false);
-  }, []);
-
-  useEffect(() => {
-    if (isMobile) return;
-
-    window.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, [isMobile, handleMouseMove, handleMouseLeave]);
-
-  // Smooth lerp animation
-  useEffect(() => {
-    if (isMobile) return;
-
-    let animationFrame;
-    const lerp = (start, end, factor) => start + (end - start) * factor;
 
     const animate = () => {
-      setSmoothPosition((prev) => ({
-        x: lerp(prev.x, position.x, 0.15),
-        y: lerp(prev.y, position.y, 0.15),
-      }));
-      animationFrame = requestAnimationFrame(animate);
+      cursor.x += (cursor.targetX - cursor.x) * 0.22;
+      cursor.y += (cursor.targetY - cursor.y) * 0.22;
+      const closeEnough = Math.abs(cursor.targetX - cursor.x) + Math.abs(cursor.targetY - cursor.y) < 0.2;
+      if (closeEnough) {
+        cursor.x = cursor.targetX;
+        cursor.y = cursor.targetY;
+      }
+
+      const position = `translate3d(${cursor.x}px, ${cursor.y}px, 0) translate(-50%, -50%)`;
+      main.style.transform = `${position} scale(${main.dataset.hovering === 'true' ? 1.5 : 1})`;
+      ring.style.transform = `${position} scale(${main.dataset.hovering === 'true' ? 1.8 : 1})`;
+      if (!closeEnough) frame = requestAnimationFrame(animate);
+      else frame = 0;
     };
 
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [position, isMobile]);
-
-  // Detect hovering on interactive elements
-  useEffect(() => {
-    if (isMobile) return;
-
-    const handleHover = (e) => {
-      const target = e.target.closest('a, button, [role="button"], input, textarea, select, .interactive');
-      setIsHovering(!!target);
+    const scheduleFrame = () => {
+      if (!frame) frame = requestAnimationFrame(animate);
     };
 
-    document.addEventListener('mouseover', handleHover);
-    return () => document.removeEventListener('mouseover', handleHover);
-  }, [isMobile]);
+    const handlePointerMove = (event) => {
+      cursor.targetX = event.clientX;
+      cursor.targetY = event.clientY;
+      if (!visible) {
+        visible = true;
+        main.style.opacity = '1';
+        ring.style.opacity = '1';
+      }
+      scheduleFrame();
+    };
 
-  if (isMobile) return null;
+    const handlePointerOver = (event) => {
+      const interactive = event.target.closest('a, button, [role="button"], input, textarea, select, .interactive');
+      main.dataset.hovering = String(Boolean(interactive));
+      scheduleFrame();
+    };
+
+    const handlePointerLeave = () => {
+      visible = false;
+      main.style.opacity = '0';
+      ring.style.opacity = '0';
+    };
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    document.addEventListener('pointerover', handlePointerOver, { passive: true });
+    document.addEventListener('pointerleave', handlePointerLeave);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('pointermove', handlePointerMove);
+      document.removeEventListener('pointerover', handlePointerOver);
+      document.removeEventListener('pointerleave', handlePointerLeave);
+      document.body.classList.remove('custom-cursor-active');
+    };
+  }, []);
 
   return (
     <>
-      {/* Main cursor — the </> symbol */}
-      <div
-        className="custom-cursor-main"
-        style={{
-          left: `${smoothPosition.x}px`,
-          top: `${smoothPosition.y}px`,
-          opacity: isVisible ? 1 : 0,
-          transform: `translate(-50%, -50%) scale(${isHovering ? 1.5 : 1})`,
-        }}
-      >
+      <div ref={mainRef} className="custom-cursor-main" aria-hidden="true">
         <span className="cursor-symbol">&lt;/&gt;</span>
       </div>
-
-      {/* Cursor ring */}
-      <div
-        className="custom-cursor-ring"
-        style={{
-          left: `${smoothPosition.x}px`,
-          top: `${smoothPosition.y}px`,
-          opacity: isVisible ? 1 : 0,
-          transform: `translate(-50%, -50%) scale(${isHovering ? 1.8 : 1})`,
-        }}
-      />
+      <div ref={ringRef} className="custom-cursor-ring" aria-hidden="true" />
 
       <style>{`
-        .custom-cursor-main {
+        .custom-cursor-main,
+        .custom-cursor-ring {
           position: fixed;
-          z-index: 99999;
+          left: 0;
+          top: 0;
           pointer-events: none;
-          transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                      opacity 0.3s ease;
+          opacity: 0;
+          will-change: transform;
+        }
+
+        .custom-cursor-main {
+          z-index: 99999;
+          transition: opacity 0.2s ease;
           mix-blend-mode: difference;
         }
 
         .cursor-symbol {
+          color: #64ffda;
           font-family: 'JetBrains Mono', monospace;
           font-size: 11px;
           font-weight: 700;
-          color: #64ffda;
+          letter-spacing: -0.5px;
           text-shadow: 0 0 8px rgba(100, 255, 218, 0.6);
           user-select: none;
-          letter-spacing: -0.5px;
         }
 
         .custom-cursor-ring {
-          position: fixed;
           z-index: 99998;
-          pointer-events: none;
           width: 36px;
           height: 36px;
           border: 1.5px solid rgba(100, 255, 218, 0.35);
           border-radius: 50%;
-          transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                      opacity 0.3s ease,
-                      border-color 0.2s ease;
+          transition: opacity 0.2s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .custom-cursor-main,
+          .custom-cursor-ring {
+            display: none;
+          }
         }
       `}</style>
     </>

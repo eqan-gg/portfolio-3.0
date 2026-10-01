@@ -102,7 +102,7 @@ a {
 }
 
 button {
-  cursor: none;
+  cursor: pointer;
   border: none;
   font-family: inherit;
   background: none;

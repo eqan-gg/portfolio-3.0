@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
 import { content } from '../data/content';
 
+const typingTexts = [
+  'MERN Stack Developer',
+  'Security Researcher',
+  'UI/UX Enthusiast',
+  'Bug Hunter',
+];
+
 const TypingText = ({ texts, className }) => {
-  const [displayText, setDisplayText] = useState('');
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -18,17 +24,18 @@ const TypingText = ({ texts, className }) => {
     } else if (isDeleting && charIndex > 0) {
       timeout = setTimeout(() => setCharIndex((prev) => prev - 1), 40);
     } else if (isDeleting && charIndex === 0) {
-      setIsDeleting(false);
-      setTextIndex((prev) => (prev + 1) % texts.length);
+      timeout = setTimeout(() => {
+        setIsDeleting(false);
+        setTextIndex((prev) => (prev + 1) % texts.length);
+      }, 0);
     }
 
-    setDisplayText(currentText.substring(0, charIndex));
     return () => clearTimeout(timeout);
   }, [charIndex, isDeleting, textIndex, texts]);
 
   return (
     <span className={className}>
-      {displayText}
+      {texts[textIndex].substring(0, charIndex)}
       <span className="typing-cursor">|</span>
     </span>
   );
@@ -53,13 +60,6 @@ const Header = () => {
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
-
-  const typingTexts = [
-    'MERN Stack Developer',
-    'Security Researcher',
-    'UI/UX Enthusiast',
-    'Bug Hunter',
-  ];
 
   return (
     <header className="header-sidebar">

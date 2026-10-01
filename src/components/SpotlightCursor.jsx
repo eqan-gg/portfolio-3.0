@@ -1,47 +1,54 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 
 const SpotlightCursor = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isMobile, setIsMobile] = useState(false);
+  const spotlightRef = useRef(null);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
+    const pointerQuery = window.matchMedia('(pointer: fine) and (min-width: 1025px)');
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!pointerQuery.matches || motionQuery.matches) return undefined;
+
+    const spotlight = spotlightRef.current;
+    let frame = 0;
+    let pointerX = 0;
+    let pointerY = 0;
+
+    const handlePointerMove = (event) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (frame) return;
+
+      frame = requestAnimationFrame(() => {
+        spotlight.style.setProperty('--spotlight-x', `${pointerX}px`);
+        spotlight.style.setProperty('--spotlight-y', `${pointerY}px`);
+        frame = 0;
+      });
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('pointermove', handlePointerMove);
+    };
   }, []);
-
-  const handleMouseMove = useCallback((e) => {
-    setMousePos({ x: e.clientX, y: e.clientY });
-  }, []);
-
-  useEffect(() => {
-    if (isMobile) return;
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isMobile, handleMouseMove]);
-
-  if (isMobile) return null;
 
   return (
-    <div
-      className="spotlight-overlay"
-      style={{
-        background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(100, 255, 218, 0.06), rgba(0, 214, 143, 0.03) 40%, transparent 70%)`,
-      }}
-    >
+    <>
+      <div ref={spotlightRef} className="spotlight-overlay" aria-hidden="true" />
       <style>{`
         .spotlight-overlay {
           position: fixed;
           inset: 0;
           z-index: 1;
           pointer-events: none;
-          transition: background 0.15s ease;
+          background: radial-gradient(650px circle at var(--spotlight-x, 50vw) var(--spotlight-y, 50vh), rgba(100, 255, 218, 0.06), rgba(0, 214, 143, 0.03) 40%, transparent 70%);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .spotlight-overlay { display: none; }
         }
       `}</style>
-    </div>
+    </>
   );
 };
 

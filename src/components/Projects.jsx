@@ -1,23 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { content } from '../data/content';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const Projects = () => {
   const [activeTab, setActiveTab] = useState('react');
   const sectionRef = useRef(null);
   
-  const [projectsData, setProjectsData] = useState({
-    react: content.projects.react,
-    wordpress: content.projects.wordpress,
-  });
-
-  useEffect(() => {
-    setProjectsData({
-      react: content.projects.react,
-      wordpress: content.projects.wordpress,
-    });
-  }, []);
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -35,20 +22,7 @@ const Projects = () => {
     return () => observer.disconnect();
   }, [activeTab]);
 
-  const currentProjects = projectsData[activeTab];
-
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const items = Array.from(currentProjects);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setProjectsData((prev) => ({
-      ...prev,
-      [activeTab]: items,
-    }));
-  };
+  const currentProjects = content.projects[activeTab];
 
   return (
     <section id="projects" ref={sectionRef} className="projects-section" aria-label="Projects">
@@ -56,56 +30,30 @@ const Projects = () => {
         <h2 className="section-label-mobile font-mono accent-text">Projects</h2>
       </div>
 
-      {/* Tabs and Drag indicator */}
+      {/* Project category tabs */}
       <div className="project-tabs-container reveal">
         <div className="project-tabs">
           <button
+            type="button"
             className={`tab-btn ${activeTab === 'react' ? 'active' : ''}`}
             onClick={() => setActiveTab('react')}
+            aria-pressed={activeTab === 'react'}
           >
             React & Web Apps
           </button>
           <button
+            type="button"
             className={`tab-btn ${activeTab === 'wordpress' ? 'active' : ''}`}
             onClick={() => setActiveTab('wordpress')}
+            aria-pressed={activeTab === 'wordpress'}
           >
             WordPress
           </button>
         </div>
-        <div className="drag-indicator">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
-            <polyline points="5 9 2 12 5 15" />
-            <polyline points="9 5 12 2 15 5" />
-            <polyline points="19 9 22 12 19 15" />
-            <polyline points="9 19 12 22 15 19" />
-            <line x1="2" y1="12" x2="22" y2="12" />
-            <line x1="12" y1="2" x2="12" y2="22" />
-          </svg>
-          Drag to reorder
-        </div>
       </div>
 
-      {/* Project Cards with Drag & Drop */}
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId={`droppable-${activeTab}`}>
-          {(provided) => (
-            <div
-              className="projects-list card-list"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {currentProjects.map((project, index) => (
-                <Draggable key={project.id} draggableId={project.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className={`project-draggable-wrapper ${snapshot.isDragging ? 'is-dragging' : ''}`}
-                      style={{
-                        ...provided.draggableProps.style,
-                      }}
-                    >
+      <div className="projects-list card-list">
+        {currentProjects.map((project, index) => (
                       <a
                         href={project.demoLink}
                         target="_blank"
@@ -160,21 +108,14 @@ const Projects = () => {
                           </div>
 
                           <div className="project-tech-stack">
-                            {project.techStack.map((tech, i) => (
-                              <span key={i} className="tech-pill">{tech}</span>
+                            {project.techStack.map((tech) => (
+                              <span key={tech} className="tech-pill">{tech}</span>
                             ))}
                           </div>
                         </div>
                       </a>
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+        ))}
+      </div>
 
       <style>{`
         .projects-section {
@@ -203,19 +144,6 @@ const Projects = () => {
         .project-tabs {
           display: flex;
           gap: 0.5rem;
-        }
-
-        .drag-indicator {
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-          font-family: var(--font-mono);
-          font-size: 0.75rem;
-          color: var(--text-secondary);
-          opacity: 0.7;
-          background: rgba(136, 146, 176, 0.1);
-          padding: 0.35rem 0.75rem;
-          border-radius: 999px;
         }
 
         .tab-btn {
@@ -247,22 +175,6 @@ const Projects = () => {
           display: flex;
           flex-direction: column;
           gap: 0.25rem;
-        }
-
-        .project-draggable-wrapper {
-          border-radius: 8px;
-          transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease;
-        }
-
-        .project-draggable-wrapper.is-dragging {
-          z-index: 100;
-          transform: scale(1.02);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .project-draggable-wrapper.is-dragging .project-card {
-          background: rgba(17, 34, 64, 0.85);
-          border: 1px solid rgba(100, 255, 218, 0.3);
         }
 
         .project-card {

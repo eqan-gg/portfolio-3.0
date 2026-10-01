@@ -40,10 +40,23 @@ const PdfModal = ({ isOpen, onClose, pdfUrl, title }) => {
               rel="noopener noreferrer"
               className="pdf-action-btn"
               title="Open in new tab"
+              aria-label="Open acknowledgment in a new tab"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
                 <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
                 <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
+              </svg>
+            </a>
+            <a
+              href={pdfUrl}
+              download
+              className="pdf-action-btn"
+              title="Download PDF"
+              aria-label="Download acknowledgment PDF"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+                <path d="M10 2a.75.75 0 01.75.75v7.69l2.22-2.22a.75.75 0 111.06 1.06l-3.5 3.5a.75.75 0 01-1.06 0l-3.5-3.5a.75.75 0 111.06-1.06l2.22 2.22V2.75A.75.75 0 0110 2z" />
+                <path d="M3.5 13.5a.75.75 0 01.75.75v2A.75.75 0 005 17h10a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0115 18.5H5a2.25 2.25 0 01-2.25-2.25v-2a.75.75 0 01.75-.75z" />
               </svg>
             </a>
             <button onClick={onClose} className="pdf-close-btn" aria-label="Close modal">

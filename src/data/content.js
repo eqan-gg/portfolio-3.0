@@ -70,6 +70,22 @@ export const content = {
   projects: {
     react: [
       {
+        id: 'customukpatches',
+        title: 'Custom UK Patches',
+        description:
+          'A client e-commerce site for custom patches, with route-by-route prerendering, optimized WebP and AVIF images, and quote and newsletter emails.',
+        techStack: [
+          'React 19', 'JavaScript / JSX', 'Vite 8', 'React Router 7', 'Custom CSS',
+          'Lucide', 'canvas-confetti', 'Node.js prerender', 'Sharp', 'WebP', 'AVIF',
+          'Express', 'Render', 'Resend', 'Spaceship cPanel', 'Apache .htaccess',
+          'Microsoft Clarity', 'Tawk.to', 'Google Fonts', 'Oxlint',
+        ],
+        demoLink: 'https://customukpatches.com/',
+        githubLink: null,
+        featured: true,
+        type: 'Client Project',
+      },
+      {
         id: 'usapatches',
         title: 'Get USA Patches',
         description:
@@ -186,6 +202,18 @@ export const content = {
   security: {
     intro: 'These are a few of my security findings which I am allowed to share publicly.',
     items: [
+      {
+        id: 'productlane',
+        org: 'Productlane',
+        title: 'Security Acknowledgment',
+        description:
+          'Received an acknowledgment for responsibly reporting a hyperlink injection issue in workspace member invitation emails. Productlane confirmed the report and shipped a fix.',
+        icon: '🔐',
+        severity: null,
+        link: 'https://productlane.com/',
+        pdfLink: '/productlane-security-acknowledgment.pdf',
+        hasDocument: true,
+      },
       {
         id: 'qodo',
         org: 'Qodo',
